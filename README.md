@@ -36,6 +36,7 @@ The options are as follows:
     -y              Debug yyparse() with yydebug = 1
 
 The program flow is as follows:
+
     (1) Parse the command line arguments.
     (2) Use cpp to preprocess the input.
     (3) Tokenize the output from (2) with strtok_r().
