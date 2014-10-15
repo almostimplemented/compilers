@@ -1,15 +1,20 @@
 compilers
 =========
 Student Name:   Andrew C. Edwards
+
 Student Email:  ancedwar@ucsc.edu
+
 Student ID:     1253060
 
 Assignment:     Project 1, String Set and Preprocessor
+
 Deadline:       Monday, 20 Oct 2014
 
 
 Documentation:
+----
 This project implements a skeleton for the oc compiler
+
 I will be building this quarter. To build do:
 
     make all
