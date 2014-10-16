@@ -24,6 +24,17 @@ const char* get_execname (void);
    // Returns a read-only value previously stored by set_progname.
    //
 
+void set_localname (char* filename);
+   //
+   // Similar to set_execname, used for general purpose basename
+   // retrieval
+   //
+
+const char* get_localname (void);
+   //
+   // Again similar to get_execname
+   //
+
 void eprint_status (const char* command, int status);
    //
    // Print the status returned by wait(2) from a subprocess.

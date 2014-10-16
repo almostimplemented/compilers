@@ -13,6 +13,7 @@
 
 static int exitstatus = EXIT_SUCCESS;
 static const char* execname = NULL;
+static const char* localname = NULL;
 static const char* debugflags = "";
 static bool alldebugflags = false;
 
@@ -23,6 +24,15 @@ void set_execname (char* argv0) {
 const char* get_execname (void) {
    assert (execname != NULL);
    return execname;
+}
+
+void set_localname (char* filename) {
+   localname = basename (filename);
+}
+
+const char* get_localname (void) {
+   assert (localname != NULL);
+   return localname;
 }
 
 static void eprint_signal (const char* kind, int signal) {

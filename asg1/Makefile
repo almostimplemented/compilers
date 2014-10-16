@@ -6,7 +6,7 @@ VALGRIND   = valgrind --leak-check=full --show-reachable=yes
 
 MKFILE     = Makefile
 DEPFILE    = Makefile.dep
-SOURCES    = auxlib.cpp oc.cpp
+SOURCES    = auxlib.cpp oc.cpp stringset.cpp
 HEADERS    = auxlib.h
 OBJECTS    = ${SOURCES:.cpp=.o}
 EXECBIN    = oc
@@ -37,4 +37,4 @@ dep :
 include Makefile.dep
 
 test : ${EXECBIN}
-	${VALGRIND} ${EXECBIN} foo.oc 1>test.out 2>test.err
+	${VALGRIND} ${EXECBIN} testcases/foo.oc 1>test.out 2>test.err
