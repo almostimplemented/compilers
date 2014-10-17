@@ -9,6 +9,8 @@ using namespace std;
 #include <stdlib.h>
 #include <string.h>
 #include <wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "auxlib.h"
 #include "stringset.h"
@@ -51,25 +53,8 @@ void build_stringset(FILE* pipe, char* filename) {
     }
 }
 
-//int main (int argc, char** argv) {
-//  set_execname (argv[0]);
-//  for (int argi = 1; argi < argc; ++argi) {
-//      char* filename = argv[argi];
-//      string command = CPP + " " + filename;
-//      printf ("command=\"%s\"\n", command.c_str());
-//      FILE* pipe = popen (command.c_str(), "r");
-//      if (pipe == NULL) {
-//          syserrprintf (command.c_str());
-//      }else {
-//          cpplines (pipe, filename);
-//          int pclose_rc = pclose (pipe);
-//          eprint_status (command.c_str(), pclose_rc);
-//      }
-//  }
-//  return get_exitstatus();
-//}
-
 int main (int argc, char **argv) {
+    set_execname (argv[0]);
     int opt, lflag = 0, yflag = 0, err = 0;
     string name;
     string cpp_opts = "", debugflags = "";
@@ -96,24 +81,28 @@ int main (int argc, char **argv) {
         }
     }
     if (err) {
-        syserrprintf("Encountered illegal argument.\n");
+        syserrprintf(optarg);
     } else if ((optind + 1) > argc) {
-        syserrprintf("Must specify file to compile.\n");
+        perror("oc: error: no input file");
     }
 
-    if (lflag) printf("lflag set\n"); 
-    if (yflag) printf("yflag set\n"); 
+    // if (lflag) printf("lflag set\n"); 
+    // if (yflag) printf("yflag set\n"); 
 
     char* filename = argv[optind];
+    struct stat buffer;
+    if (stat(filename, &buffer) != 0) {
+        syserrprintf(filename);
+        exit(1);
+    }
     string command = CPP + " " + cpp_opts + " " + filename;
-    // printf ("command=\"%s\"\n", command.c_str());
     FILE* pipe = popen (command.c_str(), "r");
     if (pipe == NULL) {
         syserrprintf(command.c_str());
+        exit(1);
     } else {
         build_stringset(pipe, filename);
         int pclose_rc = pclose(pipe);
-        // eprint_status (command.c_str(), pclose_rc);
     }
     ofstream outfile;
     set_localname(filename);

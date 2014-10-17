@@ -9,6 +9,7 @@ DEPFILE    = Makefile.dep
 SOURCES    = auxlib.cpp oc.cpp stringset.cpp
 HEADERS    = auxlib.h
 OBJECTS    = ${SOURCES:.cpp=.o}
+STR		   = *.str
 EXECBIN    = oc
 SRCFILES   = ${HEADERS} ${SOURCES} ${MKFILE}
 
@@ -21,7 +22,7 @@ ${EXECBIN} : ${OBJECTS}
 	${GCC} -c $<
 
 clean :
-	- rm ${OBJECTS}
+	- rm ${OBJECTS} ${STR}
 
 spotless : clean
 	- rm ${EXECBIN} ${LISTING} ${LISTING:.ps=.pdf} ${DEPFILE} \
@@ -37,4 +38,3 @@ dep :
 include Makefile.dep
 
 test : ${EXECBIN}
-	${VALGRIND} ${EXECBIN} testcases/foo.oc 1>test.out 2>test.err
