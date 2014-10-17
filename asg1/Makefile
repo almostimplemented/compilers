@@ -6,8 +6,8 @@ VALGRIND   = valgrind --leak-check=full --show-reachable=yes
 
 MKFILE     = Makefile
 DEPFILE    = Makefile.dep
-SOURCES    = auxlib.cpp oc.cpp stringset.cpp
-HEADERS    = auxlib.h
+SOURCES    = auxlib.cpp stringset.cpp preprocess.cpp oc.cpp
+HEADERS    = auxlib.h stringset.h preprocess.h
 OBJECTS    = ${SOURCES:.cpp=.o}
 STR		   = *.str
 EXECBIN    = oc
@@ -25,8 +25,7 @@ clean :
 	- rm ${OBJECTS} ${STR}
 
 spotless : clean
-	- rm ${EXECBIN} ${LISTING} ${LISTING:.ps=.pdf} ${DEPFILE} \
-	     test.out test.err misc.lis
+	- rm ${EXECBIN} ${DEPFILE}
 
 ${DEPFILE} :
 	${MKDEP} ${SOURCES} >${DEPFILE}

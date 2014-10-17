@@ -14,44 +14,9 @@ using namespace std;
 
 #include "auxlib.h"
 #include "stringset.h"
+#include "preprocess.h"
 
 const string CPP = "/usr/bin/cpp";
-const size_t LINESIZE = 1024;
-
-void chomp(char *string, char delim) {
-    size_t len = strlen(string);
-    if (len == 0) return;
-    char *nlpos = string + len - 1;
-    if (*nlpos == delim) *nlpos = '\0';
-}
-
-void build_stringset(FILE* pipe, char* filename) {
-    int linenr = 1;
-    char inputname[LINESIZE];
-    strcpy (inputname, filename);
-    for (;;) {
-        char buffer[LINESIZE];
-        char* fgets_rc = fgets (buffer, LINESIZE, pipe);
-        if (fgets_rc == NULL) break;
-        chomp (buffer, '\n');
-        // printf ("%s:line %d: [%s]\n", filename, linenr, buffer);
-        int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"", &linenr, filename);
-        if (sscanf_rc == 2) {
-            // printf ("DIRECTIVE: line %d file \"%s\"\n", linenr, filename);
-            continue;
-        }
-        char* savepos = NULL;
-        char* bufptr = buffer;
-        for (int tokenct = 1;; ++tokenct) {
-            char* token = strtok_r(bufptr, " \t\n", &savepos);
-            bufptr = NULL;
-            if (token == NULL) break;
-            //printf ("token %d.%d: [%s]\n", linenr, tokenct, token);
-            const string* str = intern_stringset(token);
-        }
-        ++linenr;
-    }
-}
 
 int main (int argc, char **argv) {
     set_execname (argv[0]);
@@ -83,7 +48,7 @@ int main (int argc, char **argv) {
     if (err) {
         syserrprintf(optarg);
     } else if ((optind + 1) > argc) {
-        perror("oc: error: no input file");
+        fprintf(stderr, "oc: error: no input file\n");
     }
 
     // if (lflag) printf("lflag set\n"); 
@@ -94,6 +59,11 @@ int main (int argc, char **argv) {
     if (stat(filename, &buffer) != 0) {
         syserrprintf(filename);
         exit(1);
+    } else {
+        int length = strlen(filename);
+        if (filename[length - 3] != '.' || filename[length - 2] != 'o' || filename[length - 1] != 'c') {
+            fprintf(stderr, "oc: error: file must have .oc suffix\n");
+        }
     }
     string command = CPP + " " + cpp_opts + " " + filename;
     FILE* pipe = popen (command.c_str(), "r");
