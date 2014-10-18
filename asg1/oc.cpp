@@ -16,8 +16,11 @@ using namespace std;
 #include "stringset.h"
 #include "preprocess.h"
 
+// Base of preprocessor pipe
 const string CPP = "/usr/bin/cpp";
 
+// Debugging variables 
+// Need to make extern in later assignments
 int yy_flex_debug = 0;
 int yydebug = 0;
 
@@ -26,6 +29,7 @@ int main (int argc, char **argv) {
     int opt, err = 0;
     string name;
     string cpp_opts = "", debugflags = "";
+    // Process options
     while ((opt = getopt(argc, argv, "@:D:ly")) != -1) {
         switch (opt) {
             case '@':
@@ -34,6 +38,7 @@ int main (int argc, char **argv) {
                 set_debugflags(debugflags.c_str());
                 break;
             case 'D':
+                // Extra option for CPP
                 name = optarg;
                 cpp_opts += "-D " + name;
                 break;
@@ -52,6 +57,10 @@ int main (int argc, char **argv) {
         syserrprintf(optarg);
     } else if ((optind + 1) > argc) {
         fprintf(stderr, "oc: error: no input file\n");
+        exit(1);
+    } else if ((optind + 1) < argc) {
+        fprintf(stderr, "oc: error: more than one input file");
+        exit(1);
     }
 
     char* filename = argv[optind];
