@@ -18,9 +18,12 @@ using namespace std;
 
 const string CPP = "/usr/bin/cpp";
 
+int yy_flex_debug = 0;
+int yydebug = 0;
+
 int main (int argc, char **argv) {
     set_execname (argv[0]);
-    int opt, lflag = 0, yflag = 0, err = 0;
+    int opt, err = 0;
     string name;
     string cpp_opts = "", debugflags = "";
     while ((opt = getopt(argc, argv, "@:D:ly")) != -1) {
@@ -35,10 +38,10 @@ int main (int argc, char **argv) {
                 cpp_opts += "-D " + name;
                 break;
             case 'l':
-                lflag = 1;
+                yy_flex_debug = 1;
                 break;
             case 'y':
-                yflag = 1;
+                yydebug = 1;
                 break;
             case '?':
                 err = 1;
@@ -50,9 +53,6 @@ int main (int argc, char **argv) {
     } else if ((optind + 1) > argc) {
         fprintf(stderr, "oc: error: no input file\n");
     }
-
-    // if (lflag) printf("lflag set\n"); 
-    // if (yflag) printf("yflag set\n"); 
 
     char* filename = argv[optind];
     struct stat buffer;
@@ -66,14 +66,7 @@ int main (int argc, char **argv) {
         }
     }
     string command = CPP + " " + cpp_opts + " " + filename;
-    FILE* pipe = popen (command.c_str(), "r");
-    if (pipe == NULL) {
-        syserrprintf(command.c_str());
-        exit(1);
-    } else {
-        build_stringset(pipe, filename);
-        int pclose_rc = pclose(pipe);
-    }
+    preprocess(command, filename);
     ofstream outfile;
     set_localname(filename);
     string outfilename(get_localname());

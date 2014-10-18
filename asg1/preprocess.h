@@ -7,7 +7,7 @@
 
 
 void chomp(char *string, char delim);
-void build_stringset(FILE* pipe, char* filename);
+void preprocess(string command, char* filename);
 
 #endif
 
