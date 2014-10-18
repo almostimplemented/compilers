@@ -1,4 +1,0 @@
-auxlib.o: auxlib.cpp auxlib.h
-stringset.o: stringset.cpp stringset.h
-preprocess.o: preprocess.cpp stringset.h
-oc.o: oc.cpp auxlib.h stringset.h preprocess.h
