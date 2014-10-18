@@ -21,6 +21,9 @@ ${EXECBIN} : ${OBJECTS}
 %.o : %.cpp
 	${GCC} -c $<
 
+ci:
+	git commit -a -m "$m"
+
 clean :
 	- rm ${OBJECTS} ${STR}
 
