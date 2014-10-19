@@ -23,7 +23,7 @@ ${EXECBIN} : ${OBJECTS}
 	${GCC} -c $<
 
 ci :
-	git commit -a -m "$m"
+	git commit -m "$m"
 
 clean :
 	- rm ${OBJECTS}
@@ -46,3 +46,4 @@ dep :
 include Makefile.dep
 
 test : ${EXECBIN}
+	run_test

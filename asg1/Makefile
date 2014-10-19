@@ -46,3 +46,4 @@ dep :
 include Makefile.dep
 
 test : ${EXECBIN}
+	run_test
