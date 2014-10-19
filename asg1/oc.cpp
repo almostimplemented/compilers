@@ -40,7 +40,7 @@ int main (int argc, char **argv) {
             case 'D':
                 // Extra option for CPP
                 name = optarg;
-                cpp_opts += "-D " + name;
+                cpp_opts += " -D " + name;
                 break;
             case 'l':
                 yy_flex_debug = 1;
@@ -73,6 +73,7 @@ int main (int argc, char **argv) {
         int length = strlen(filename);
         if (filename[length - 3] != '.' || filename[length - 2] != 'o' || filename[length - 1] != 'c') {
             fprintf(stderr, "oc: error: file must have .oc suffix\n");
+            exit(1);
         }
     }
 
