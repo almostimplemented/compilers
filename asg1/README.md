@@ -14,7 +14,6 @@ Deadline:       Monday, 20 Oct 2014
 Documentation:
 ----
 This project implements a skeleton for the oc compiler
-
 I will be building this quarter. To build do:
 
     make all
