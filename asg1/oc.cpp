@@ -59,7 +59,7 @@ int main (int argc, char **argv) {
         fprintf(stderr, "oc: error: no input file\n");
         exit(1);
     } else if ((optind + 1) < argc) {
-        fprintf(stderr, "oc: error: more than one input file");
+        fprintf(stderr, "oc: error: more than one input file\n");
         exit(1);
     }
 
