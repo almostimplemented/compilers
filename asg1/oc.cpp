@@ -63,6 +63,7 @@ int main (int argc, char **argv) {
         exit(1);
     }
 
+    // Make sure the file to compile exists and has .oc suffix
     char* filename = argv[optind];
     struct stat buffer;
     if (stat(filename, &buffer) != 0) {
@@ -74,8 +75,12 @@ int main (int argc, char **argv) {
             fprintf(stderr, "oc: error: file must have .oc suffix\n");
         }
     }
+
+    // Preprocess the file and generate the string set
     string command = CPP + " " + cpp_opts + " " + filename;
     preprocess(command, filename);
+
+    // Create <program>.str file
     ofstream outfile;
     set_localname(filename);
     string outfilename(get_localname());
