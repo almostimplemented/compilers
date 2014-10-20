@@ -1,3 +1,5 @@
+// Author, Andrew Edwards, ancedwar@ucsc.edu
+
 using namespace std;
 
 #include <string.h>

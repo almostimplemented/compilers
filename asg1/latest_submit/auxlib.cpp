@@ -1,4 +1,4 @@
-
+// Author, Andrew Edwards, ancedwar@ucsc.edu
 #include <assert.h>
 #include <errno.h>
 #include <libgen.h>

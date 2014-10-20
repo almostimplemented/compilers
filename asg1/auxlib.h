@@ -1,12 +1,13 @@
-#ifndef __AUXLIB_H__
-#define __AUXLIB_H__
-
-#include <stdarg.h>
-
+// Author, Andrew Edwards, ancedwar@ucsc.edu
 //
 // DESCRIPTION
 //    Auxiliary library containing miscellaneous useful things.
 //
+
+#ifndef __AUXLIB_H__
+#define __AUXLIB_H__
+
+#include <stdarg.h>
 
 //
 // Error message and exit status utility.

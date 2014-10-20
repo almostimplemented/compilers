@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.8 2014-10-07 18:13:45-07 - - $
+# Author, Andrew Edwards, ancedwar@ucsc.edu
 
 GCC        = g++ -g -O0 -Wall -Wextra -std=gnu++11
 MKDEP      = g++ -MM -std=gnu++11
@@ -11,6 +11,7 @@ HEADERS    = auxlib.h stringset.h preprocess.h
 OBJECTS    = ${SOURCES:.cpp=.o}
 EXECBIN    = oc
 SRCFILES   = ${HEADERS} ${SOURCES} ${MKFILE}
+README	   = README.md
 SUBMITLOC  = cmps104a-wm.f14
 ASGNO      = asg1
 
@@ -33,13 +34,13 @@ spotless : clean
 	- rm ${EXECBIN} ${DEPFILE}
 
 submit :
-	- submit ${SUBMITLOC} ${ASGNO} ${SRCFILES}
-	- cp ${SRCFILES} latest_submit
+	- submit ${SUBMITLOC} ${ASGNO} ${SRCFILES} ${README}
+	- cp ${SRCFILES} ${README} latest_submit
 
 ${DEPFILE} :
 	${MKDEP} ${SOURCES} >${DEPFILE}
 
-dep :
+deps :
 	- rm ${DEPFILE}
 	${MAKE} --no-print-directory ${DEPFILE}
 

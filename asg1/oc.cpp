@@ -1,3 +1,17 @@
+// Author, Andrew Edwards, ancedwar@ucsc.edu
+// 
+// NAME
+//    oc - main program for the oc compiler
+//
+// SYNOPSIS
+//    oc [-ly] [-@ <flags...>] [-D <string>] <program>.oc
+//
+// DESCRIPTION
+//    At this stage the program preprocesses the input program,
+//    does a number of preliminary checks, and initializes the
+//    stringset, and dumps its contents into <program>.str
+//
+
 #include <string>
 #include <fstream>
 using namespace std;

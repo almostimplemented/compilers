@@ -1,4 +1,4 @@
-// $Id: stringset.cpp,v 1.11 2014-10-09 15:47:45-07 - - $
+// Author, Andrew Edwards, ancedwar@ucsc.edu
 
 #include <iomanip>
 #include <unordered_set>

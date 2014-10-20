@@ -1,3 +1,9 @@
+// Author, Andrew Edwards, ancedwar@ucsc.edu
+//
+// DESCRIPTION
+//    Functions used during preprocessing phase.
+//
+
 #ifndef __PREPROCESS__
 #define __PREPROCESS__
 
