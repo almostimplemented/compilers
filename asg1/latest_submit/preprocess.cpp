@@ -6,6 +6,7 @@ using namespace std;
 
 const size_t LINESIZE = 1024;
 
+// Replace delimiter with null terminator
 void chomp(char *string, char delim) {
     size_t len = strlen(string);
     if (len == 0) return;
@@ -13,8 +14,9 @@ void chomp(char *string, char delim) {
     if (*nlpos == delim) *nlpos = '\0';
 }
 
+// Invokes CPP and generates stringset
 void preprocess(string command, char* filename) {
-    FILE* pipe = popen (command.c_str(), "r");
+    FILE* pipe = popen(command.c_str(), "r");
     if (pipe == NULL) {
         syserrprintf(command.c_str());
         exit(1);
@@ -22,10 +24,10 @@ void preprocess(string command, char* filename) {
         int linenr = 1;
         for (;;) {
             char buffer[LINESIZE];
-            char* fgets_rc = fgets (buffer, LINESIZE, pipe);
+            char* fgets_rc = fgets(buffer, LINESIZE, pipe);
             if (fgets_rc == NULL) break;
             chomp (buffer, '\n');
-            int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"", &linenr, filename);
+            int sscanf_rc = sscanf(buffer, "# %d \"%[^\"]\"", &linenr, filename);
             if (sscanf_rc == 2) {
                 continue;
             }
