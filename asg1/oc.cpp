@@ -85,7 +85,9 @@ int main (int argc, char **argv) {
         exit(1);
     } else {
         int length = strlen(filename);
-        if (filename[length - 3] != '.' || filename[length - 2] != 'o' || filename[length - 1] != 'c') {
+        if (filename[length - 3] != '.' || \
+            filename[length - 2] != 'o' || \
+            filename[length - 1] != 'c') {
             fprintf(stderr, "oc: error: file must have .oc suffix\n");
             exit(1);
         }
@@ -98,8 +100,8 @@ int main (int argc, char **argv) {
     // Create <program>.str file
     ofstream outfile;
     set_localname(filename);
-    string outfilename(get_localname());
-    outfile.open(outfilename.substr(0, outfilename.length() - 3) + ".str");
+    string outname(get_localname());
+    outfile.open(outname.substr(0, outname.length() - 3) + ".str");
     dump_stringset(outfile);
     return get_exitstatus();
 }

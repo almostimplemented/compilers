@@ -29,7 +29,8 @@ void preprocess(string command, char* filename) {
             char* fgets_rc = fgets(buffer, LINESIZE, pipe);
             if (fgets_rc == NULL) break;
             chomp (buffer, '\n');
-            int sscanf_rc = sscanf(buffer, "# %d \"%[^\"]\"", &linenr, filename);
+            int sscanf_rc = sscanf(buffer, "# %d \"%[^\"]\"", \
+                                   &linenr, filename);
             if (sscanf_rc == 2) {
                 continue;
             }
