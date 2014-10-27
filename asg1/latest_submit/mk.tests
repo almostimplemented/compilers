@@ -1,7 +1,8 @@
 #!/bin/bash
 # $Id: mk.tests,v 1.8 2014-10-03 15:38:24-07 - - $
 export PATH=$PATH:/afs/cats.ucsc.edu/courses/cmps012b-wm/bin
-PROG=oc
+#PROG=oc
+PROG="oc -D__OCLIB_C__"
 
 OCDIR=/afs/cats.ucsc.edu/courses/cmps104a-wm/Assignments/oc-programs
 cp $OCDIR/*.oh $OCDIR/*.oc .
