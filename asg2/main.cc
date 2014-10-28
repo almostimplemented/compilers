@@ -58,8 +58,9 @@ void scan_opts (int argc, char** argv) {
       errprintf ("Usage: %s [-ly] [filename]\n", get_execname());
       exit (get_exitstatus());
    }
-   const char* filename = optind == argc ? "-" : argv[optind];
-   cpp_command += " " + *filename;
+   const char *filename = optind == argc ? "-" : argv[optind];
+   cpp_command += " "; 
+   cpp_command += filename;
    yyin_cpp_popen();
    DEBUGF ('m', "filename = %s, yyin = %p, fileno (yyin) = %d\n",
            filename, yyin, fileno (yyin));
@@ -76,12 +77,12 @@ int main (int argc, char** argv) {
    );
    scan_opts (argc, argv);
    scanner_setecho (want_echo());
-   free_ast (yyparse_astree);
+   int tok;
+   while ((tok=yylex()) > 0) {
+       dump_astree(stdout, yylval);
+   }
    yyin_cpp_pclose();
-   // DEBUGSTMT ('s', dump_stringset (stderr); );
+   //DEBUGSTMT ('s', dump_stringset (stderr); );
    yylex_destroy();
    return get_exitstatus();
 }
-
-RCSC("$Id: main.cc,v 1.4 2013-09-20 17:52:13-07 - - $")
-

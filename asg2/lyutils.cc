@@ -93,6 +93,3 @@ void scanner_include (void) {
               included_filenames.back().c_str(), scan_linenr);
    }
 }
-
-RCSC("$Id: lyutils.cpp,v 1.1 2014-10-03 18:22:05-07 - - $")
-

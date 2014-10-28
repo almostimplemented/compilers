@@ -44,7 +44,6 @@ astree* adopt1sym (astree* root, astree* child, int symbol) {
    return root;
 }
 
-
 static void dump_node (FILE* outfile, astree* node) {
    fprintf (outfile, "%p->{%s(%d) %ld:%ld.%03ld \"%s\" [",
             node, get_yytname (node->symbol), node->symbol,
@@ -90,7 +89,6 @@ void yyprint (FILE* outfile, unsigned short toknum,
    fflush (NULL);
 }
 
-
 void free_ast (astree* root) {
    while (not root->children.empty()) {
       astree* child = root->children.back();
@@ -107,6 +105,3 @@ void free_ast2 (astree* tree1, astree* tree2) {
    free_ast (tree1);
    free_ast (tree2);
 }
-
-RCSC("$Id: astree.cpp,v 1.1 2014-10-03 18:22:05-07 - - $")
-

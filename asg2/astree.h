@@ -28,5 +28,4 @@ void yyprint (FILE* outfile, unsigned short toknum,
 void free_ast (astree* tree);
 void free_ast2 (astree* tree1, astree* tree2);
 
-RCSH("$Id: astree.h,v 1.2 2013-10-11 18:52:46-07 - - $")
 #endif

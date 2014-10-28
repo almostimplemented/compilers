@@ -94,6 +94,3 @@ BAD_STRING      (\"{STRING_BODY}*\n)
 
 .               { scanner_badchar (*yytext); }
 %%
-
-RCSC("$Id: scanner.l,v 1.3 2013-10-15 16:37:56-07 - - $")
-
