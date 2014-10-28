@@ -9,8 +9,8 @@ VALGRIND  = valgrind --leak-check=full --show-reachable=yes
 #
 # Definitions of list of files:
 #
-HSOURCES  = astree.h  emit.h  lyutils.h  auxlib.h  stringset.h
-CSOURCES  = astree.cc emit.cc lyutils.cc auxlib.cc stringset.cc main.cc
+HSOURCES  = astree.h  lyutils.h  auxlib.h  stringset.h
+CSOURCES  = astree.cc lyutils.cc auxlib.cc stringset.cc main.cc
 LSOURCES  = scanner.l
 YSOURCES  = parser.y
 ETCSRC    = README ${MKFILE} ${DEPSFILE}
@@ -19,7 +19,7 @@ HYGEN     = yyparse.h
 CYGEN     = yyparse.cc
 CGENS     = ${CLGEN} ${CYGEN}
 ALLGENS   = ${HYGEN} ${CGENS}
-EXECBIN   = zexprsm
+EXECBIN   = oc
 ALLCSRC   = ${CSOURCES} ${CGENS}
 OBJECTS   = ${ALLCSRC:.cc=.o}
 LREPORT   = yylex.output
@@ -55,7 +55,6 @@ ${EXECBIN} : ${OBJECTS}
 %.o : %.cc
 	${GCC} -c $<
 
-
 #
 # Build the scanner.
 #
@@ -70,32 +69,14 @@ ${CYGEN} ${HYGEN} : ${YSOURCES}
 	bison --defines=${HYGEN} --output=${CYGEN} ${YSOURCES}
 
 #
-# Check sources into an RCS subdirectory.
-#
-ci : ${ALLSRC} ${TESTINS}
-	cid + ${ALLSRC} ${TESTINS} test?.inh
-
-#
-# Make a listing from all of the sources
-#
-lis : ${LISTSRC} tests
-	mkpspdf List.source.ps ${LISTSRC}
-	mkpspdf List.output.ps ${REPORTS} \
-		${foreach test, ${TESTINS:.in=}, \
-		${patsubst %, ${test}.%, in out err}}
-
-#
 # Clean and spotless remove generated files.
 #
 clean :
-	- rm ${OBJECTS} ${ALLGENS} ${REPORTS} ${DEPSFILE} core
-	- rm ${foreach test, ${TESTINS:.in=}, \
-		${patsubst %, ${test}.%, out err}}
+	- rm ${OBJECTS} ${ALLGENS} ${REPORTS} ${DEPSFILE}
 
 spotless : clean
-	- rm ${EXECBIN} List.*.ps List.*.pdf
+	- rm ${EXECBIN}
 
-
 #
 # Build the dependencies file using the C preprocessor
 #
@@ -110,15 +91,6 @@ ${DEPSFILE} :
 #
 # Test
 #
-
-tests : ${EXECBIN}
-	touch ${TESTINS}
-	make --no-print-directory ${TESTINS:.in=.out}
-
-%.out %.err : %.in ${EXECBIN}
-	( ${VALGRIND} ${EXECBIN} -ly -@@ $< \
-	;  echo EXIT STATUS $$? 1>&2 \
-	) 1>$*.out 2>$*.err
 
 #
 # Everything

@@ -35,7 +35,6 @@ void scanner_setecho (bool echoflag) {
    scan_echo = echoflag;
 }
 
-
 void scanner_useraction (void) {
    if (scan_echo) {
       if (scan_offset == 0) printf (";%5d: ", scan_linenr);
@@ -73,11 +72,10 @@ int yylval_token (int symbol) {
 }
 
 astree* new_parseroot (void) {
-   yyparse_astree = new_astree (ROOT, 0, 0, 0, "<<ROOT>>");
+   yyparse_astree = new_astree (TOK_ROOT, 0, 0, 0, "<<ROOT>>");
    return yyparse_astree;
 }
 
-
 void scanner_include (void) {
    scanner_newline();
    char filename[strlen (yytext) + 1];

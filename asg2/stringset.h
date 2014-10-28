@@ -1,17 +1,18 @@
+// Author, Andrew Edwards, ancedwar@ucsc.edu
+//
+// DESCRIPTION
+//    Stringset used for indexing tokens of preprocessed program. 
+//
+
 #ifndef __STRINGSET__
 #define __STRINGSET__
 
+#include <iostream>
 #include <string>
-#include <unordered_set>
-using namespace std;
 
-#include <stdio.h>
+const std::string* intern_stringset (const char*);
 
-#include "auxlib.h"
+void dump_stringset (std::ostream&);
 
-const string* intern_stringset (const char*);
-
-void dump_stringset (FILE*);
-
-RCSH("$Id: stringset.h,v 1.1 2013-10-11 18:53:00-07 - - $")
 #endif
+
