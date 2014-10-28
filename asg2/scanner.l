@@ -23,13 +23,13 @@ LETTER          [A-Za-z_]
 DIGIT           [0-9]
 INTEGER         ({DIGIT}+)
 IDENT           ({LETTER}({LETTER}|{DIGIT})*)
+BAD_IDENT       ({INTEGER}{IDENT})
 CHAR_BODY       ([^\\'\n]|\\[\\'"0nt])
-CHAR_CONST      ('{CHAR_BODY}')
+CHAR_CONST      (\'{CHAR_BODY}\')
+BAD_CHAR        (\'{CHAR_BODY}{CHAR_BODY}+\'|\'{CHAR_BODY}*\n)
 STRING_BODY     ([^\\"\n]|\\[\\'"0nt])
 STRING_CONST    (\"{STRING_BODY}*\")
-BAD_CHAR        (('({CHAR_BODY}{2:})')|('({CHAR_BODY})*))
 BAD_STRING      (\"{STRING_BODY}*\n)
-BAD_IDENT       ({DIGIT}({LETTER}|{DIGIT})+)
 
 %%
 
@@ -87,7 +87,7 @@ BAD_IDENT       ({DIGIT}({LETTER}|{DIGIT})+)
                   return yylval_token(TOK_IDENT); }
 
 {BAD_CHAR}      { scanner_badtoken (yytext);
-                  return yylval_token(TOK_CHARCON) ;}
+                  return yylval_token(TOK_CHARCON); }
 
 {BAD_STRING}    { scanner_badtoken (yytext);
                   return yylval_token(TOK_STRINGCON); }
