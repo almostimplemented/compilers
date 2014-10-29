@@ -1,12 +1,13 @@
-#ifndef __AUXLIB_H__
-#define __AUXLIB_H__
-
-#include <stdarg.h>
-
+// Author, Andrew Edwards, ancedwar@ucsc.edu
 //
 // DESCRIPTION
 //    Auxiliary library containing miscellaneous useful things.
 //
+
+#ifndef __AUXLIB_H__
+#define __AUXLIB_H__
+
+#include <stdarg.h>
 
 //
 // Error message and exit status utility.
@@ -21,7 +22,18 @@ void set_execname (char* argv0);
 
 const char* get_execname (void);
    //
-   // Returns a read-only value previously set by set_progname.
+   // Returns a read-only value previously stored by set_progname.
+   //
+
+void set_localname (char* filename);
+   //
+   // Similar to set_execname, used for general purpose basename
+   // retrieval
+   //
+
+const char* get_localname (void);
+   //
+   // Again similar to get_execname
    //
 
 void eprint_status (const char* command, int status);
@@ -38,7 +50,7 @@ int get_exitstatus (void);
 
 void set_exitstatus (int);
    //
-   // Sets the exit status.  Remebers only the largest value.
+   // Sets the exit status.  Remebers only the largest value passed in.
    //
 
 
@@ -59,8 +71,7 @@ void eprintf (const char* format, ...);
 void errprintf (const char* format, ...);
    //
    // Print an error message according to the printf format
-   // specified, using eprintf.  Sets the exitstatus to
-   // EXIT_FAILURE.
+   // specified, using eprintf.  Sets the exitstatus to EXIT_FAILURE.
    //
 
 void syserrprintf (const char* object);
@@ -85,14 +96,13 @@ void __stubprintf (const char* file, int line, const char* func,
 //
 
 void set_debugflags (const char* flags);
-
-   // Sets a string of debug flags to be used by DEBUGF
-   // statements.  Uses the address of the string, and does
-   // not copy it, so it must not be dangling.  If a particular
-   // debug flag has been set, messages are printed.  The format
-   // is identical to printf format.  The flag "@" turns on
-   // all flags.
-
+   //
+   // Sets a string of debug flags to be used by DEBUGF statements.
+   // Uses the address of the string, and does not copy it, so it
+   // must not be dangling.  If a particular debug flag has been set,
+   // messages are printed.  The format is identical to printf format.
+   // The flag "@" turns on all flags.
+   //
 
 bool is_debugflag (char flag);
    //
@@ -108,14 +118,13 @@ bool is_debugflag (char flag);
 void __debugprintf (char flag, const char* file, int line,
                     const char* func, const char* format, ...);
 #define DEBUGF(FLAG,...) \
-        __debugprintf (FLAG, __FILE__, __LINE__, __func__, \
-                       __VA_ARGS__)
+        __debugprintf (FLAG, __FILE__, __LINE__, __func__, __VA_ARGS__)
 #define DEBUGSTMT(FLAG,STMTS) \
         if (is_debugflag (FLAG)) { DEBUGF (FLAG, "\n"); STMTS }
 #endif
 
 //
-// Definition of RCSID macro to include RCS info in obj and exec.
+// Definition of RCSID macro to include RCS info in objs and execbin.
 //
 
 #define RCS3(ID,N,X) static const char ID##N[] = X;
@@ -123,5 +132,5 @@ void __debugprintf (char flag, const char* file, int line,
 #define RCSH(X) RCS2(__COUNTER__,X)
 #define RCSC(X) RCSH(X \
 "\0$Compiled: " __FILE__ " " __DATE__ " " __TIME__ " $")
-RCSH("$Id: auxlib.h,v 1.2 2013-10-11 18:53:00-07 - - $") 
+RCSH("$Id: auxlib.h,v 1.1 2013-09-20 19:38:26-07 - - $") 
 #endif

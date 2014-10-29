@@ -68,6 +68,7 @@ int yylval_token (int symbol) {
    int offset = scan_offset - yyleng;
    yylval = new_astree (symbol, included_filenames.size() - 1,
                         scan_linenr, offset, yytext);
+   yyprint(tokfile, symbol, yylval);
    return symbol;
 }
 
@@ -86,7 +87,7 @@ void scanner_include (void) {
       errprintf ("%: %d: [%s]: invalid directive, ignored\n",
                  scan_rc, yytext);
    }else {
-      printf (";# %d \"%s\"\n", linenr, filename);
+      fprintf (tokfile, "# %d \"%s\"\n", linenr, filename);
       scanner_newfilename (filename);
       scan_linenr = linenr - 1;
       DEBUGF ('m', "filename=%s, scan_linenr=%d\n",
