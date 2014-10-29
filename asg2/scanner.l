@@ -1,5 +1,4 @@
 %{
-// $Id: scanner.l,v 1.3 2013-10-15 16:37:56-07 - - $
 
 #include "auxlib.h"
 #include "lyutils.h"

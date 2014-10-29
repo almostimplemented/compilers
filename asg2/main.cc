@@ -32,6 +32,7 @@ string cpp_command = "/usr/bin/cpp";
 string filename = "";
 
 FILE *tokfile;
+FILE *strfile;
 
 // Open a pipe from the C preprocessor.
 // Exit failure if can't.
@@ -91,8 +92,9 @@ void scan_opts (int argc, char** argv) {
             exit(get_exitstatus());
         }
     }
-    // Copy over filename
-    filename += fname;
+    // Copy over filename, remove suffix
+    filename = string(basename(fname));
+    filename = filename.substr(0, filename.length() - 3);
 
     // Open cpp pipe
     cpp_command += " "; 
@@ -113,27 +115,29 @@ int main (int argc, char** argv) {
     // read in options
     scan_opts(argc, argv);
 
-    // isolate basename of infile
-    char *localname = new char [filename.length()+1];
-    strcpy(localname, filename.c_str());
-    localname = basename(localname);
-    string inname(localname);
+
+    // initialize strfile
+    string strfilename = filename + ".str";
+    strfile = fopen(strfilename.c_str(), "w");
 
     // initialize tokfile
-    string tokfilename = inname.substr(0, inname.length() - 3) + ".tok";
+    string tokfilename = filename + ".tok";
     tokfile = fopen(tokfilename.c_str(), "w");
 
     // scan
     scanner_setecho(want_echo());
     int tok;
-    while ((tok=yylex()) > 0);
+    while ((tok=yylex()) > 0) {
+        free(yylval);
+    }
     yyin_cpp_pclose();
-    fclose(tokfile);
 
     // generate .str file
-    ofstream outfile;
-    outfile.open(inname.substr(0, inname.length() - 3) + ".str");
-    dump_stringset(outfile);
+    dump_stringset(strfile);
+
+    // close tokfile and strfile
+    fclose(tokfile);
+    fclose(strfile);
 
     yylex_destroy();
     return get_exitstatus();

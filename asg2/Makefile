@@ -1,5 +1,3 @@
-# $Id: Makefile,v 1.11 2013-10-15 16:37:56-07 - - $
-
 MKFILE    = Makefile
 DEPSFILE  = ${MKFILE}.deps
 NOINCLUDE = ci clean spotless
@@ -101,4 +99,3 @@ again :
 ifeq "${NEEDINCL}" ""
 include ${DEPSFILE}
 endif
-

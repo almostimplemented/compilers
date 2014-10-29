@@ -1,18 +1,15 @@
-// Author, Andrew Edwards, ancedwar@ucsc.edu
-//
-// DESCRIPTION
-//    Stringset used for indexing tokens of preprocessed program. 
-//
-
 #ifndef __STRINGSET__
 #define __STRINGSET__
 
-#include <iostream>
 #include <string>
+#include <unordered_set>
+using namespace std;
 
-const std::string* intern_stringset (const char*);
+#include <stdio.h>
 
-void dump_stringset (std::ostream&);
+const string* intern_stringset (const char*);
+
+void dump_stringset (FILE*);
 
 #endif
 

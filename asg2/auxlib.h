@@ -122,15 +122,4 @@ void __debugprintf (char flag, const char* file, int line,
 #define DEBUGSTMT(FLAG,STMTS) \
         if (is_debugflag (FLAG)) { DEBUGF (FLAG, "\n"); STMTS }
 #endif
-
-//
-// Definition of RCSID macro to include RCS info in objs and execbin.
-//
-
-#define RCS3(ID,N,X) static const char ID##N[] = X;
-#define RCS2(N,X) RCS3(RCS_Id,N,X)
-#define RCSH(X) RCS2(__COUNTER__,X)
-#define RCSC(X) RCSH(X \
-"\0$Compiled: " __FILE__ " " __DATE__ " " __TIME__ " $")
-RCSH("$Id: auxlib.h,v 1.1 2013-09-20 19:38:26-07 - - $") 
 #endif

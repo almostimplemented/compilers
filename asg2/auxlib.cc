@@ -138,6 +138,3 @@ void __debugprintf (char flag, const char* file, int line,
    va_end (args);
    fflush (NULL);
 }
-
-RCSC("$Id: auxlib.cpp,v 1.2 2014-10-07 18:07:29-07 - - $")
-
