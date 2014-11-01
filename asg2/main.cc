@@ -73,7 +73,7 @@ void scan_opts (int argc, char** argv) {
         }
     }
     if (optind > argc) {
-        errprintf ("Usage: %s [-ly] [filename]\n", get_execname());
+        errprintf ("Usage: %s [-@Dly] [filename]\n", get_execname());
         exit (get_exitstatus());
     }
     const char *fname = optind == argc ? "-" : argv[optind];
@@ -116,20 +116,17 @@ int main (int argc, char** argv) {
     scan_opts(argc, argv);
 
 
-    // initialize strfile
+    // initialize output files 
     string strfilename = filename + ".str";
     strfile = fopen(strfilename.c_str(), "w");
 
-    // initialize tokfile
     string tokfilename = filename + ".tok";
     tokfile = fopen(tokfilename.c_str(), "w");
 
     // scan
     scanner_setecho(want_echo());
     int tok;
-    while ((tok=yylex()) > 0) {
-        free(yylval);
-    }
+    while ((tok=yylex()) > 0);
     yyin_cpp_pclose();
 
     // generate .str file

@@ -25,10 +25,10 @@ IDENT           ({LETTER}({LETTER}|{DIGIT})*)
 BAD_IDENT       ({INTEGER}{IDENT})
 CHAR_BODY       ([^\\'\n]|\\[\\'"0nt])
 CHAR_CONST      (\'{CHAR_BODY}\')
-BAD_CHAR        (\'{CHAR_BODY}{CHAR_BODY}+\'|\'{CHAR_BODY}*\n)
+BAD_CHAR        (\'{CHAR_BODY}{CHAR_BODY}+\'|\'{CHAR_BODY}*)
 STRING_BODY     ([^\\"\n]|\\[\\'"0nt])
 STRING_CONST    (\"{STRING_BODY}*\")
-BAD_STRING      (\"{STRING_BODY}*\n)
+BAD_STRING      (\"{STRING_BODY}*)
 
 %%
 
