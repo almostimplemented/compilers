@@ -106,7 +106,6 @@ void scan_opts (int argc, char** argv) {
     yyin_cpp_popen();
     DEBUGF ('m', "filename = %s, yyin = %p, fileno (yyin) = %d\n",
             fname, yyin, fileno (yyin));
-    scanner_newfilename (fname);
 }
 
 int main (int argc, char** argv) {
