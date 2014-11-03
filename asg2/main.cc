@@ -61,7 +61,7 @@ void scan_opts (int argc, char** argv) {
     yy_flex_debug = 0;
     yydebug = 0;
     for(;;) {
-        option = getopt (argc, argv, "@:ely");
+        option = getopt (argc, argv, "@:D:ly");
         if (option == EOF) break;
         switch (option) {
             case '@': set_debugflags (optarg);   break;

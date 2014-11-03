@@ -48,9 +48,3 @@ bool is_defined_token (int symbol) {
    return YYTRANSLATE (symbol) > YYUNDEFTOK;
 }
 
-static void* yycalloc (size_t size) {
-   void* result = calloc (1, size);
-   // assert (result != NULL);
-   return result;
-}
-

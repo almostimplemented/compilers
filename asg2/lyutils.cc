@@ -85,7 +85,7 @@ void scanner_include (void) {
    if (scan_rc != 2) {
       errprintf ("%: %d: [%s]: invalid directive, ignored\n",
                  scan_rc, yytext);
-   }else {
+   } else {
       fprintf (tokfile, "# %d \"%s\"\n", linenr, filename);
       scanner_newfilename (filename);
       scan_linenr = linenr - 1;
