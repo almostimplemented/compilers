@@ -7,6 +7,10 @@
 //    oc [-ly] [-@ <flags...>] [-D <string>] <program>.oc
 //
 // DESCRIPTION
+//    Part two of the ongoing compiler project.
+//    Generates <program>.str and <program>.tok,
+//    which describe the contents of the stringset
+//    and the astree nodes, respectively.
 //
 
 #include <string>

@@ -1,3 +1,6 @@
+// Author, Andrew Edwards, ancedwar@ucsc.edu
+//
+
 #ifndef __LYUTILS_H__
 #define __LYUTILS_H__
 

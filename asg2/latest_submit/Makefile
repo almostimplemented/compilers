@@ -29,8 +29,8 @@ ALLSRC    = ${ETCSRC} ${YSOURCES} ${LSOURCES} ${HSOURCES} ${CSOURCES}
 #
 # Definitions of the compiler and compilation options:
 #
-GCC       = g++ -g -O0 -Wall -Wextra -std=gnu++0x
-MKDEPS    = g++ -MM -std=gnu++0x
+GCC       = g++ -g -O0 -Wall -Wextra -std=gnu++11
+MKDEPS    = g++ -MM -std=gnu++11
 
 #
 # The first target is always ``all'', and hence the default,

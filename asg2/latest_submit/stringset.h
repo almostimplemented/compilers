@@ -1,3 +1,6 @@
+// Author, Andrew Edwards, ancedwar@ucsc.edu
+//
+
 #ifndef __STRINGSET__
 #define __STRINGSET__
 

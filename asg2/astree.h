@@ -1,3 +1,6 @@
+// Author, Andrew Edwards, ancedwar@ucsc.edu
+//
+
 #ifndef __ASTREE_H__
 #define __ASTREE_H__
 

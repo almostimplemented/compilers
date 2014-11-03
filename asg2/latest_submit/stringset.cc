@@ -1,3 +1,6 @@
+// Author, Andrew Edwards, ancedwar@ucsc.edu
+//
+
 #include "stringset.h"
 
 using stringset = unordered_set<string>;
