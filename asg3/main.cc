@@ -35,6 +35,7 @@ using namespace std;
 string cpp_command = "/usr/bin/cpp";
 string filename = "";
 
+FILE *astfile;
 FILE *tokfile;
 FILE *strfile;
 
@@ -126,16 +127,21 @@ int main (int argc, char** argv) {
     string tokfilename = filename + ".tok";
     tokfile = fopen(tokfilename.c_str(), "w");
 
-    // scan
-    scanner_setecho(want_echo());
-    int tok;
-    while ((tok=yylex()) > 0);
+    string astfilename = filename + ".ast";
+    astfile = fopen(astfilename.c_str(), "w");
+
+    // parse
+    yyparse();
     yyin_cpp_pclose();
 
     // generate .str file
     dump_stringset(strfile);
 
+    // generate .ast file
+    dump_astree(astfile, yyparse_astree);
+
     // close tokfile and strfile
+    fclose(astfile);
     fclose(tokfile);
     fclose(strfile);
 

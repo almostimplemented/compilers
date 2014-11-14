@@ -37,8 +37,31 @@ astree* adopt2 (astree* root, astree* left, astree* right) {
     return root;
 }
 
+astree* adopt3 (astree* root, astree* one, astree* two, astree* three) {
+    adopt1 (root, one);
+    adopt1 (root, two);
+    adopt1 (root, three);
+    return root;
+}
+
 astree* adopt1sym (astree* root, astree* child, int symbol) {
     root = adopt1 (root, child);
+    root->symbol = symbol;
+    return root;
+}
+
+astree* adopt2sym (astree* root, astree* left, astree* right, int symbol) {
+    root = adopt1 (root, left);
+    root = adopt1 (root, right);
+    root->symbol = symbol;
+    return root;
+}
+
+astree* adopt3sym (astree* root, astree* one, astree* two,
+                   astree* three, int symbol) {
+    root = adopt1 (root, one);
+    root = adopt1 (root, two);
+    root = adopt1 (root, three);
     root->symbol = symbol;
     return root;
 }
@@ -58,17 +81,20 @@ static void dump_node (FILE* outfile, astree* node) {
 }
 
 static void dump_astree_rec (FILE* outfile, astree* root,
-        int depth) {
+                             int depth) {
     if (root == NULL) return;
-    fprintf (outfile, "%*s%s ", depth * 3, "",
-            root->lexinfo->c_str());
-    dump_node (outfile, root);
-    fprintf (outfile, "\n");
-    for (size_t child = 0; child < root->children.size();
-            ++child) {
-        dump_astree_rec (outfile, root->children[child],
-                depth + 1);
-    }
+    int i;
+    const char *tname = get_yytname (root->symbol);
+    if (strstr (tname, "TOK_") == tname) tname += 4;
+    for (i = 0; i < depth; i++) fprintf(outfile, "|  ");
+    fprintf(outfile, "%s \"%s\" %4lu.%03lu.%.03lu\n", 
+        tname, root->lexinfo->c_str(),
+        root->filenr, root->linenr, root->offset); 
+    /*fprintf (outfile, "%*s%s\n", depth * 3, "",
+        root->lexinfo->c_str());*/
+    for (size_t child = 0; child < root->children.size(); ++child) {
+      dump_astree_rec (outfile, root->children[child], depth + 1);
+   }
 }
 
 void dump_astree (FILE* outfile, astree* root) {
