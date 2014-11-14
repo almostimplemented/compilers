@@ -30,7 +30,7 @@
 %right '='
 %left TOK_EQ TOK_NE TOK_LE TOK_LT TOK_GE TOK_GT
 %left '+' '-'
-%left '*' '/'
+%left '*' '/' '%'
 %right POS NEG '!' TOK_ORD TOK_CHR
 %left '(' ')'
 %left '[' ']' '.'
@@ -53,53 +53,52 @@ structhead  : structhead fielddecl ';'      { free_ast($3);
                                               $$ = adopt1($1, $2); }
             | TOK_STRUCT TOK_IDENT '{'      { free_ast($3);
                                               $2->symbol = TOK_TYPEID;
-                                              $$ = adopt1($1, $2);
-                                            }
+                                              $$ = adopt1($1, $2); }
             ;
 fielddecl   : basetype TOK_ARRAY TOK_IDENT  { $3->symbol = TOK_FIELD;
                                               $$ = adopt2($2, $1, $3); }
             | basetype TOK_IDENT            { $2->symbol = TOK_FIELD; 
                                               $$ = adopt1($1, $2); }
             ;
-basetype    : TOK_VOID      { $$ = $1; }
-            | TOK_BOOL      { $$ = $1; } 
-            | TOK_CHAR      { $$ = $1; }
-            | TOK_INT       { $$ = $1; }
-            | TOK_STRING    { $$ = $1; }
-            | TOK_IDENT     { $$ = $1; }
+basetype    : TOK_VOID                      { $$ = $1; }
+            | TOK_BOOL                      { $$ = $1; } 
+            | TOK_CHAR                      { $$ = $1; }
+            | TOK_INT                       { $$ = $1; }
+            | TOK_STRING                    { $$ = $1; }
+            | TOK_IDENT                     { $$ = $1; }
             ;
-function    : identdecl '(' ')' ';'       { $2->symbol = TOK_PARAMLIST;
-                                            free_ast($3);
-                                            free_ast($4);
-                                            $$ = adopt2(new_astree(TOK_PROTOTYPE,
-                                                                   $1->filenr,
-                                                                   $1->linenr,
-                                                                   $1->offset,
-                                                                   ""),
-                                                        $1, $2); }
-            | identdecl '(' ')' block     { $2->symbol = TOK_PARAMLIST;
-                                            free_ast($3);
-                                            $$ = adopt3(new_astree(TOK_FUNCTION,
-                                                                   $1->filenr,
-                                                                   $1->linenr,
-                                                                   $1->offset,
-                                                                   ""),
-                                                        $1, $2, $4); }
-            | identdecl params ')' ';'    { free_ast($3);
-                                            free_ast($4);
-                                            $$ = adopt2(new_astree(TOK_PROTOTYPE,
-                                                                   $1->filenr,
-                                                                   $1->linenr,
-                                                                   $1->offset,
-                                                                   ""),
-                                                        $1, $2); }
-            | identdecl params ')' block  { free_ast($3);
-                                            $$ = adopt3(new_astree(TOK_FUNCTION,
-                                                                   $1->filenr,
-                                                                   $1->linenr,
-                                                                   $1->offset,
-                                                                   ""),
-                                                        $1, $2, $4); }
+function    : identdecl '(' ')' ';'         { $2->symbol = TOK_PARAMLIST;
+                                              free_ast($3);
+                                              free_ast($4);
+                                              $$ = adopt2(new_astree(TOK_PROTOTYPE,
+                                                                     $1->filenr,
+                                                                     $1->linenr,
+                                                                     $1->offset,
+                                                                     ""),
+                                                          $1, $2); }
+            | identdecl '(' ')' block       { $2->symbol = TOK_PARAMLIST;
+                                              free_ast($3);
+                                              $$ = adopt3(new_astree(TOK_FUNCTION,
+                                                                     $1->filenr,
+                                                                     $1->linenr,
+                                                                     $1->offset,
+                                                                     ""),
+                                                          $1, $2, $4); }
+            | identdecl params ')' ';'      { free_ast($3);
+                                              free_ast($4);
+                                              $$ = adopt2(new_astree(TOK_PROTOTYPE,
+                                                                     $1->filenr,
+                                                                     $1->linenr,
+                                                                     $1->offset,
+                                                                     ""),
+                                                          $1, $2); }
+            | identdecl params ')' block    { free_ast($3);
+                                              $$ = adopt3(new_astree(TOK_FUNCTION,
+                                                                     $1->filenr,
+                                                                     $1->linenr,
+                                                                     $1->offset,
+                                                                     ""),
+                                                          $1, $2, $4); }
             ;
 params      : params ',' identdecl          { free_ast($2);
                                               $$ = adopt1($1, $3); }
@@ -117,19 +116,20 @@ blockhead   : blockhead statement           { $$ = adopt1($1, $2); }
             | '{'                           { $1->symbol = TOK_BLOCK; 
                                               $$ = $1; }
             ;
-statement   : block                 { $$ = $1; }
-            | vardecl               { $$ = $1; }
-            | while                 { $$ = $1; }
-            | ifelse                { $$ = $1; }
-            | return                { $$ = $1; }
-            | expr ';'              { free_ast($2); $$ = $1; }
-            | ';'                   { $$ = $1; }
+statement   : block                         { $$ = $1; }
+            | vardecl                       { $$ = $1; }
+            | while                         { $$ = $1; }
+            | ifelse                        { $$ = $1; }
+            | return                        { $$ = $1; }
+            | expr ';'                      { free_ast($2); $$ = $1; }
+            | ';'                           { $$ = $1; }
             ;
-vardecl     : identdecl '=' expr ';'    { free_ast($4);
-                                          $$ = adopt2sym($2, $1, $3, TOK_VARDECL); }
+vardecl     : identdecl '=' expr ';'        { free_ast($4);
+                                              $$ = adopt2sym($2, $1, $3, TOK_VARDECL); }
             ;
-while       : TOK_WHILE '(' expr ')' statement { free_ast($2); free_ast($4);
-                                                 $$ = adopt2($1, $3, $5); }
+while       : TOK_WHILE '(' expr ')' statement                  { free_ast($2); 
+                                                                  free_ast($4);
+                                                                  $$ = adopt2($1, $3, $5); }
             ;
 ifelse      : TOK_IF '(' expr ')' statement TOK_ELSE statement  { free_ast($2);
                                                                   free_ast($4);
@@ -142,39 +142,39 @@ ifelse      : TOK_IF '(' expr ')' statement TOK_ELSE statement  { free_ast($2);
                                                                   $$ = adopt2($1,
                                                                         $3, $5); }
             ;
-return      : TOK_RETURN ';'            { free_ast($2);
-                                          $1->symbol = TOK_RETURNVOID; 
-                                          $$ = $1; }
-            | TOK_RETURN expr ';'       { free_ast($3);
-                                          $$ = adopt1($1, $2); }
+return      : TOK_RETURN ';'                { free_ast($2);
+                                              $1->symbol = TOK_RETURNVOID; 
+                                              $$ = $1; }
+            | TOK_RETURN expr ';'           { free_ast($3);
+                                              $$ = adopt1($1, $2); }
             ;
-expr        : expr binop expr           { $$ = adopt2($2, $1, $3); }
-            | unop expr                 { $$ = adopt1($1, $2); }
-            | allocator                 { $$ = $1; }
-            | call                      { $$ = $1; }
-            | '(' expr ')'              { free_ast($1); free_ast($3);
-                                          $$ = $2; }
-            | variable                  { $$ = $1; }
-            | constant                  { $$ = $1; }
+expr        : binop                         { $$ = $1; }
+            | unop                          { $$ = $1; }
+            | allocator                     { $$ = $1; }
+            | call                          { $$ = $1; }
+            | '(' expr ')'                  { free_ast($1); free_ast($3);
+                                              $$ = $2; }
+            | variable                      { $$ = $1; }
+            | constant                      { $$ = $1; }
             ;
-binop       : '+'           { $$ = $1; }
-            | '-'           { $$ = $1; }
-            | '*'           { $$ = $1; }
-            | '/'           { $$ = $1; }
-            | '%'           { $$ = $1; }
-            | '='           { $$ = $1; }
-            | TOK_EQ        { $$ = $1; }
-            | TOK_NE        { $$ = $1; }
-            | TOK_LT        { $$ = $1; }
-            | TOK_LE        { $$ = $1; }
-            | TOK_GT        { $$ = $1; }
-            | TOK_GE        { $$ = $1; }
+binop       : expr '+' expr                 { $$ = adopt2($2, $1, $3); }
+            | expr '-' expr                 { $$ = adopt2($2, $1, $3); }
+            | expr '*' expr                 { $$ = adopt2($2, $1, $3); }
+            | expr '/' expr                 { $$ = adopt2($2, $1, $3); }
+            | expr '%' expr                 { $$ = adopt2($2, $1, $3); }
+            | expr '=' expr                 { $$ = adopt2($2, $1, $3); }
+            | expr TOK_EQ expr              { $$ = adopt2($2, $1, $3); }
+            | expr TOK_NE expr              { $$ = adopt2($2, $1, $3); }
+            | expr TOK_LT expr              { $$ = adopt2($2, $1, $3); }
+            | expr TOK_LE expr              { $$ = adopt2($2, $1, $3); }
+            | expr TOK_GT expr              { $$ = adopt2($2, $1, $3); }
+            | expr TOK_GE expr              { $$ = adopt2($2, $1, $3); }
             ;
-unop        : '+'           { $1->symbol = TOK_POS; $$ = $1; }
-            | '-'           { $1->symbol = TOK_NEG; $$ = $1; }
-            | '!'           { $$ = $1; }
-            | TOK_ORD       { $$ = $1; }
-            | TOK_CHR       { $$ = $1; }
+unop        : '+' expr                      { $$ = adopt1sym($1, $2, TOK_POS); } 
+            | '-' expr                      { $$ = adopt1sym($1, $2, TOK_NEG); }
+            | '!' expr                      { $$ = adopt1($1, $2); }
+            | TOK_ORD expr                  { $$ = adopt1($1, $2); }
+            | TOK_CHR expr                  { $$ = adopt1($1, $2); }
             ;
 allocator   : TOK_NEW TOK_IDENT '(' ')'         { free_ast($3); free_ast($4);
                                                   $2->symbol = TOK_TYPEID; 
