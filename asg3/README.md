@@ -34,5 +34,7 @@ The options are as follows:
 
     -y              Debug yyparse() with yydebug = 1
 
-The program generates the same .str file created by project 1, but
-also creates a .tok file that dumps the tokens of the program.
+The program generates the same .str file created by project 1, and 
+the .tok file from project 2, but now it uses yyparse() and a bison
+grammar spec to build an abstract syntax tree. The tree data structure
+is dumped in a human readable format into a .ast file.
