@@ -4,5 +4,5 @@ mkdir -p testing
 cp ../oc-programs/* testing
 cd testing
 for file in *; do
-    ../oc $file
+    valgrind --leak-check=full --show-reachable=yes ../oc $file
 done
