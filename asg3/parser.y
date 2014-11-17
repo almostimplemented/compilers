@@ -2,6 +2,7 @@
 
 #include "lyutils.h"
 #include "astree.h"
+#include "stringset.h"
 
 %}
 
@@ -78,7 +79,8 @@ function    : identdecl '(' ')' ';'   { $2->symbol = TOK_PARAMLIST;
                                                      $1->filenr,
                                                      $1->linenr,
                                                      $1->offset,
-                                                     ""), $1, $2); }
+                                                     ""), $1, $2); 
+                                        intern_stringset(""); }
             | identdecl '(' ')' block { $2->symbol = TOK_PARAMLIST;
                                         free_ast($3);
                                         $$ = adopt3(new_astree(
@@ -86,7 +88,8 @@ function    : identdecl '(' ')' ';'   { $2->symbol = TOK_PARAMLIST;
                                                      $1->filenr,
                                                      $1->linenr,
                                                      $1->offset,
-                                                     ""), $1, $2, $4); }
+                                                     ""), $1, $2, $4);  
+                                        intern_stringset(""); }
             | identdecl params ')' ';'
                                       { free_ast($3, $4);
                                         $$ = adopt2(new_astree(
@@ -94,7 +97,8 @@ function    : identdecl '(' ')' ';'   { $2->symbol = TOK_PARAMLIST;
                                                      $1->filenr,
                                                      $1->linenr,
                                                      $1->offset,
-                                                     ""), $1, $2); }
+                                                     ""), $1, $2); 
+                                        intern_stringset(""); }
             | identdecl params ')' block 
                                       { free_ast($3);
                                         $$ = adopt3(new_astree(
@@ -102,7 +106,8 @@ function    : identdecl '(' ')' ';'   { $2->symbol = TOK_PARAMLIST;
                                                      $1->filenr,
                                                      $1->linenr,
                                                      $1->offset,
-                                                     ""), $1, $2, $4); }
+                                                     ""), $1, $2, $4); 
+                                        intern_stringset(""); }
             ;
 params      : params ',' identdecl    { free_ast($2);
                                         $$ = adopt1($1, $3); }
