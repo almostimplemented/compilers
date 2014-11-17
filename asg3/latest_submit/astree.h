@@ -34,6 +34,8 @@ void dump_astree (FILE* outfile, astree* root);
 void yyprint (FILE* outfile, unsigned short toknum,
               astree* yyvaluep);
 void free_ast (astree* tree);
-void free_ast2 (astree* tree1, astree* tree2);
+void free_ast (astree* tree1, astree* tree2);
+void free_ast (astree* tree1, astree* tree2,
+                astree* tree3);
 
 #endif

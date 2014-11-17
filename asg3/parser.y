@@ -40,9 +40,6 @@
 
 %%
 
-start       : program                  { yyparse_astree = $1; 
-                                         $$ = $1; }
-            ;
 program     : program structdef       { $$ = adopt1($1, $2); }
             | program function        { $$ = adopt1($1, $2); }
             | program statement       { $$ = adopt1($1, $2); }
@@ -75,8 +72,7 @@ basetype    : TOK_VOID                { $$ = $1; }
                                         $$ = $1; }
             ;
 function    : identdecl '(' ')' ';'   { $2->symbol = TOK_PARAMLIST;
-                                        free_ast($3);
-                                        free_ast($4);
+                                        free_ast($3, $4);
                                         $$ = adopt2(new_astree(
                                                      TOK_PROTOTYPE,
                                                      $1->filenr,
@@ -92,8 +88,7 @@ function    : identdecl '(' ')' ';'   { $2->symbol = TOK_PARAMLIST;
                                                      $1->offset,
                                                      ""), $1, $2, $4); }
             | identdecl params ')' ';'
-                                      { free_ast($3);
-                                        free_ast($4);
+                                      { free_ast($3, $4);
                                         $$ = adopt2(new_astree(
                                                      TOK_PROTOTYPE,
                                                      $1->filenr,
@@ -139,19 +134,15 @@ vardecl     : identdecl '=' expr ';'  { free_ast($4);
                                                        TOK_VARDECL); }
             ;
 while       : TOK_WHILE '(' expr ')' statement                  
-                                      { free_ast($2); 
-                                        free_ast($4);
+                                      { free_ast($2, $4);
                                         $$ = adopt2($1, $3, $5); }
             ;
 ifelse      : TOK_IF '(' expr ')' statement TOK_ELSE statement
-                                      { free_ast($2);
-                                        free_ast($4);
-                                        free_ast($6);
+                                      { free_ast($2, $4, $6);
                                         $$ = adopt3sym($1, $3, $5,
                                                     $7, TOK_IFELSE); }
             | TOK_IF '(' expr ')' statement %prec "then"
-                                      { free_ast($2);
-                                        free_ast($4);
+                                      { free_ast($2, $4);
                                         $$ = adopt2($1, $3, $5); }
             ;
 return      : TOK_RETURN ';'          { free_ast($2);
@@ -164,8 +155,7 @@ expr        : binop                   { $$ = $1; }
             | unop                    { $$ = $1; }
             | allocator               { $$ = $1; }
             | call                    { $$ = $1; }
-            | '(' expr ')'            { free_ast($1); 
-                                        free_ast($3);
+            | '(' expr ')'            { free_ast($1, $3);
                                         $$ = $2; }
             | variable                { $$ = $1; }
             | constant                { $$ = $1; }
@@ -192,19 +182,15 @@ unop        : '+' expr                { $$ = adopt1sym($1, $2,
             | TOK_CHR expr            { $$ = adopt1($1, $2); }
             ;
 allocator   : TOK_NEW TOK_IDENT '(' ')'
-                                      { free_ast($3);
-                                        free_ast($4);
+                                      { free_ast($3, $4);
                                         $2->symbol = TOK_TYPEID; 
                                         $$ = adopt1($1, $2); }
             | TOK_NEW TOK_STRING  '(' expr ')'  
-                                      { free_ast($2); 
-                                        free_ast($3); 
-                                        free_ast($5);
+                                      { free_ast($2, $3, $5); 
                                         $$ = adopt1sym($1, $4, 
                                                 TOK_NEWSTRING); }
             | TOK_NEW basetype '[' expr ']'
-                                      { free_ast($3); 
-                                        free_ast($5);
+                                      { free_ast($3, $5); 
                                         $$ = adopt2sym($1, $2, $4, 
                                                 TOK_NEWARRAY); }
             ;

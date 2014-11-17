@@ -7,10 +7,12 @@
 //    oc [-ly] [-@ <flags...>] [-D <string>] <program>.oc
 //
 // DESCRIPTION
-//    Part two of the ongoing compiler project.
-//    Generates <program>.str and <program>.tok,
-//    which describe the contents of the stringset
-//    and the astree nodes, respectively.
+//    Part three of the ongoing compiler project.
+//    Generates <prog>.ast, <prog>.tok, and <prog>.str
+//    The first file is a visualization of the AST.
+//    The second file shows the contents of each token.
+//    The third file shows the contents of the maintained
+//    dictionary of encountered tokens.
 //
 
 #include <string>

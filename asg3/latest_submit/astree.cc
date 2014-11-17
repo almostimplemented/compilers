@@ -125,7 +125,14 @@ void free_ast (astree* root) {
     delete root;
 }
 
-void free_ast2 (astree* tree1, astree* tree2) {
+void free_ast (astree* tree1, astree* tree2) {
     free_ast (tree1);
     free_ast (tree2);
+}
+
+void free_ast (astree* tree1, astree* tree2,
+                astree* tree3) {
+    free_ast (tree1);
+    free_ast (tree2);
+    free_ast (tree3);
 }
