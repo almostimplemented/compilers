@@ -10,6 +10,7 @@ using namespace std;
 
 #include "lyutils.h"
 #include "auxlib.h"
+#include "stringset.h"
 
 astree* yyparse_astree = NULL;
 int scan_linenr = 1;
@@ -72,7 +73,8 @@ int yylval_token (int symbol) {
 }
 
 astree* new_parseroot (void) {
-   yyparse_astree = new_astree (TOK_ROOT, 0, 0, 0, "ROOT");
+   yyparse_astree = new_astree (TOK_ROOT, 0, 0, 0, "");
+   intern_stringset("");
    return yyparse_astree;
 }
 
