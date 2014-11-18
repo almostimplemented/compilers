@@ -95,7 +95,7 @@ void scan_opts (int argc, char** argv) {
         if (fname[length - 3] != '.' || \
                 fname[length - 2] != 'o' || \
                 fname[length - 1] != 'c') {
-            fprintf(stderr, "oc: error: file must have .oc suffix\n");
+            fprintf(stderr, "oc: %s: file must have .oc suffix\n", fname);
             exit(get_exitstatus());
         }
     }
