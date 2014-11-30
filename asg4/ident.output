@@ -1,0 +1,17 @@
+astree.o:
+
+lyutils.o:
+
+auxlib.o:
+
+stringset.o:
+
+symbol-table.o:
+
+main.o:
+
+yylex.o:
+
+yyparse.o:
+
+oc:

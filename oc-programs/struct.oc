@@ -1,0 +1,4 @@
+struct node {
+   string data;
+   node link;
+}
