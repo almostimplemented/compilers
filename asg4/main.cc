@@ -34,7 +34,7 @@ using namespace std;
 #include "auxlib.h"
 #include "lyutils.h"
 #include "stringset.h"
-#include "symbol-table.h"
+#include "symboltable.h"
 
 string cpp_command = "/usr/bin/cpp";
 string filename = "";

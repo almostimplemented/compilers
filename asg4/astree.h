@@ -9,7 +9,7 @@
 using namespace std;
 
 #include "auxlib.h"
-#include "symbol-table.h"
+#include "symboltable.h"
 
 struct astree {
    int symbol;               // token code
