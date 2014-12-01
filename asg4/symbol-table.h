@@ -12,8 +12,8 @@ using namespace std;
 
 enum { ATTR_void, ATTR_bool, ATTR_char, ATTR_int, ATTR_null,
        ATTR_string, ATTR_struct, ATTR_array, ATTR_function,
-       ATTR_variable, ATTR_field, ATTR_typeid, ATTR_param,
-       ATTR_lval, ATTR_const, ATTR_vreg, ATTR_vaddr,
+       ATTR_prototype, ATTR_variable, ATTR_field, ATTR_typeid,
+       ATTR_param, ATTR_lval, ATTR_const, ATTR_vreg, ATTR_vaddr,
        ATTR_bitset_size,
 };
 using attr_bitset = bitset<ATTR_bitset_size>;
@@ -33,11 +33,16 @@ struct symbol {
 struct astree;
 symbol* new_symbol(astree* node);
 bool add_symbol(symbol_table table, symbol_entry entry);
-void enter_block();
+void traverse_block();
+void enter_block(astree* root);
 void exit_block();
 void traverse_astree(astree* root);
-symbol* create_struct_sym(astree* struct_node);
+astree* id_type_attr(astree* node);
+symbol_entry create_struct_entry(astree* struct_node);
 symbol_entry create_field_entry(astree* field_node);
-symbol* create_var_sym(astree* vardecl_node);
-void visit(astree* root);
+symbol_entry create_var_entry(astree* vardecl_node);
+symbol_entry create_proto_entry(astree* proto_node);
+symbol_entry create_func_entry(astree* func_node);
+void function_check(const string* lexinfo, symbol* sym);
+void proto_check(const string* lexinfo, symbol* sym);
 #endif

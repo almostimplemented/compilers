@@ -34,6 +34,7 @@ using namespace std;
 #include "auxlib.h"
 #include "lyutils.h"
 #include "stringset.h"
+#include "symbol-table.h"
 
 string cpp_command = "/usr/bin/cpp";
 string filename = "";
@@ -136,6 +137,8 @@ int main (int argc, char** argv) {
     // parse
     yyparse();
     yyin_cpp_pclose();
+
+    traverse_astree(yyparse_astree);
 
     // generate .str file
     dump_stringset(strfile);

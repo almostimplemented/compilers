@@ -91,9 +91,10 @@ static void dump_astree_rec (FILE* outfile, astree* root,
     const char *tname = get_yytname (root->symbol);
     if (strstr (tname, "TOK_") == tname) tname += 4;
     for (i = 0; i < depth; i++) fprintf(outfile, "|  ");
-    fprintf(outfile, "%s \"%s\" %lu.%lu.%lu\n", 
+    fprintf(outfile, "%s \"%s\" (%lu.%lu.%lu) {%lu} \n", 
         tname, root->lexinfo->c_str(),
-        root->filenr, root->linenr, root->offset); 
+        root->filenr, root->linenr, root->offset,
+        root->blocknr); 
     /*fprintf (outfile, "%*s%s\n", depth * 3, "",
         root->lexinfo->c_str());*/
     for (size_t child = 0; child < root->children.size(); ++child) {
