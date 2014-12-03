@@ -18,7 +18,8 @@ astree* new_astree (int symbol, int filenr, int linenr,
     tree->offset = offset;
     tree->blocknr = 0;
     tree->attributes = 0;
-    tree->struct_node = NULL;
+    tree->struct_name = nullptr;
+    tree->fields = nullptr;
     tree->lexinfo = intern_stringset (lexinfo);
     DEBUGF ('f', "astree %p->{%d:%d.%d: %s: \"%s\"}\n",
             tree, tree->filenr, tree->linenr, tree->offset,
@@ -91,10 +92,50 @@ static void dump_astree_rec (FILE* outfile, astree* root,
     const char *tname = get_yytname (root->symbol);
     if (strstr (tname, "TOK_") == tname) tname += 4;
     for (i = 0; i < depth; i++) fprintf(outfile, "|  ");
-    fprintf(outfile, "%s \"%s\" (%lu.%lu.%lu) {%lu} \n", 
+    fprintf(outfile, "%s \"%s\" (%lu.%lu.%lu) {%lu} ", 
         tname, root->lexinfo->c_str(),
         root->filenr, root->linenr, root->offset,
         root->blocknr); 
+    if (root->attributes.test(ATTR_void))
+        fprintf(outfile, "void ");
+    if (root->attributes.test(ATTR_int))
+        fprintf(outfile, "int ");
+    if (root->attributes.test(ATTR_char))
+        fprintf(outfile, "char ");
+    if (root->attributes.test(ATTR_bool))
+        fprintf(outfile, "bool ");
+    if (root->attributes.test(ATTR_string))
+        fprintf(outfile, "string ");
+    if (root->attributes.test(ATTR_null))
+        fprintf(outfile, "null ");
+    if (root->attributes.test(ATTR_struct)) {
+        fprintf(outfile, "struct ");
+        if (root->struct_name != nullptr)
+            fprintf(outfile, "\"%s\" ", root->struct_name->c_str());
+    }
+    if (root->attributes.test(ATTR_array))
+        fprintf(outfile, "array ");
+    if (root->attributes.test(ATTR_function))
+        fprintf(outfile, "function ");
+    if (root->attributes.test(ATTR_prototype))
+        fprintf(outfile, "prototype ");
+    if (root->attributes.test(ATTR_variable))
+        fprintf(outfile, "variable ");
+    if (root->attributes.test(ATTR_field))
+        fprintf(outfile, "field ");
+    if (root->attributes.test(ATTR_typeid))
+        fprintf(outfile, "typeid ");
+    if (root->attributes.test(ATTR_param))
+        fprintf(outfile, "param ");
+    if (root->attributes.test(ATTR_lval))
+        fprintf(outfile, "lval ");
+    if (root->attributes.test(ATTR_const))
+        fprintf(outfile, "const ");
+    if (root->attributes.test(ATTR_vreg))
+        fprintf(outfile, "vreg ");
+    if (root->attributes.test(ATTR_vaddr))
+        fprintf(outfile, "vaddr ");
+    fprintf(outfile, "\n");
     /*fprintf (outfile, "%*s%s\n", depth * 3, "",
         root->lexinfo->c_str());*/
     for (size_t child = 0; child < root->children.size(); ++child) {

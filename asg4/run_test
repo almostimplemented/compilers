@@ -4,5 +4,6 @@ mkdir -p testing
 cp ../oc-programs/* testing
 cd testing
 for file in *; do
+    echo $file
     ../oc $file
 done

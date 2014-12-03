@@ -18,7 +18,8 @@ struct astree {
    size_t offset;            // offset of token with current line
    size_t blocknr;          
    attr_bitset attributes;
-   symbol_table *struct_node; 
+   const string* struct_name; 
+   symbol_table* fields;
    const string* lexinfo;    // pointer to lexical information
    vector<astree*> children; // children of this n-way node
 };

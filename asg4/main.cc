@@ -42,6 +42,7 @@ string filename = "";
 FILE *astfile;
 FILE *tokfile;
 FILE *strfile;
+FILE *symfile;
 
 // Open a pipe from the C preprocessor.
 // Exit failure if can't.
@@ -97,7 +98,8 @@ void scan_opts (int argc, char** argv) {
         if (fname[length - 3] != '.' || \
                 fname[length - 2] != 'o' || \
                 fname[length - 1] != 'c') {
-            fprintf(stderr, "oc: %s: file must have .oc suffix\n", fname);
+            fprintf(stderr, "oc: %s: file must have .oc suffix\n", 
+                    fname);
             exit(get_exitstatus());
         }
     }
@@ -133,6 +135,9 @@ int main (int argc, char** argv) {
 
     string astfilename = filename + ".ast";
     astfile = fopen(astfilename.c_str(), "w");
+
+    string symfilename = filename + ".sym";
+    symfile = fopen(symfilename.c_str(), "w");
 
     // parse
     yyparse();
