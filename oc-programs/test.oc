@@ -1,0 +1,23 @@
+struct node {
+   string data;
+   node link;
+}
+
+{
+    int b = 2;
+    {
+        int a = 1;
+    }
+    b = b + a;
+}
+
+int[] foo();
+int[] foo() {
+    int[] a = new int[2];
+    return a;
+}
+
+int bar(int a, node n, bool b);
+int bar(int a, node n, bool b) {
+    return 2;
+}
