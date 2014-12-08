@@ -21,6 +21,7 @@ symbol* new_symbol(astree* node) {
     sym->struct_name = node->struct_name;
     sym->fields     = node->fields;
     sym->node       = node;
+    node->symptr    = sym;
     return sym;
 }
 

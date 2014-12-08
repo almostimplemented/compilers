@@ -201,7 +201,7 @@ void emit_return(astree* root){
 void emit_vardecl(astree* root) {
     astree* ident = get_id(root);
     astree* expr  = root->children.at(1);
-    symbol* sym   = lookup_symbol(ident->lexinfo);
+    symbol* sym   = ident->symptr;
     if (expr->attributes.test(ATTR_vreg) 
      || expr->attributes.test(ATTR_vaddr))
         emit_expression(expr);
@@ -230,7 +230,7 @@ astree* get_id(astree* vardecl_node) {
 void emit_assignment(astree* root) {
     astree* ident = root->children.at(0);
     astree* expr  = root->children.at(1);
-    symbol* sym   = lookup_symbol(ident->lexinfo);
+    symbol* sym   = ident->symptr;
     fprintf(oilfile, "_");
     if (sym->blocknr > 0)
         fprintf(oilfile, "%lu", sym->blocknr);
@@ -259,7 +259,7 @@ void emit_int_operand(astree* op) {
     if (op->attributes.test(ATTR_vreg)) {
         fprintf(oilfile, "i%lu", op->regnr);
     } else if (op->attributes.test(ATTR_variable)) {
-        symbol* sym = lookup_symbol(op->lexinfo);
+        symbol* sym = op->symptr;
         fprintf(oilfile, "_");
         if (sym->blocknr > 0)
             fprintf(oilfile, "%lu", sym->blocknr);
@@ -303,18 +303,4 @@ void emit_select(astree* root){
 }
 void emit_call(astree* root){
     return;
-}
-
-symbol* lookup_symbol(const string* lexinfo) {
-    symbol_table *table;
-    symbol_table::const_iterator got;
-    for(int i = (int) symbol_stack.size() - 1; i >= 0; i--) {
-        table = symbol_stack.at(i);
-        got   = table->find(lexinfo);
-        if (got != table->end()) {
-            return got->second;
-        }
-    }
-    fprintf(stderr, "Error looking up symbol\n");
-    exit(1);
 }

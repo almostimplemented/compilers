@@ -50,6 +50,5 @@ void emit_call(astree* root);
 void emit_operand(astree* op);
 void emit_int_operand(astree* op);
 void emit_bin_arithmetic(astree* root);
-symbol* lookup_symbol(const string* lexinfo);
 astree* get_id(astree* vardecl_node);
 #endif
