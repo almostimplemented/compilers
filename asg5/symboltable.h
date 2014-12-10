@@ -21,6 +21,7 @@ enum { ATTR_void, ATTR_bool, ATTR_char, ATTR_int, ATTR_null,
 using attr_bitset = bitset<ATTR_bitset_size>;
 
 struct symbol;
+using symbol_ptr   = symbol*;
 using symbol_table = unordered_map<const string*,symbol*>;
 using symbol_entry = pair<const string*,symbol*>;
 
@@ -34,6 +35,7 @@ struct symbol {
    size_t blocknr;
    vector<symbol*>* parameters;
    astree* node;
+   astree* block;
 };
 
 symbol* new_symbol(astree* node);

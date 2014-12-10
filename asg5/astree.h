@@ -21,7 +21,7 @@ struct astree {
    attr_bitset attributes;
    const string* struct_name; 
    symbol_table* fields;
-   symbol* symptr;
+   symbol_ptr symptr;
    const string* lexinfo;    // pointer to lexical information
    vector<astree*> children; // children of this n-way node
 };

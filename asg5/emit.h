@@ -20,11 +20,13 @@ typedef symbol_table::iterator symtab_it;
 extern FILE *oilfile;
 extern symbol_table* struct_table;
 extern queue<astree*> string_queue;
+extern queue<symbol*> function_queue;
 extern symbol_table* struct_table;
 extern vector<symbol_table*> symbol_stack;
 extern symbol_table* global_table;
 
 void emit_code(astree* root);
+void emit_prologue();
 void emit_structs();
 void emit_stringcons();
 void emit_vardecls();
@@ -38,6 +40,7 @@ void emit_return(astree* root);
 void emit_vardecl(astree* root);
 void emit_assignment(astree* root);
 void emit_compare(astree* root);
+void emit_negate(astree* root);
 void emit_ord(astree* root);
 void emit_chr(astree* root);
 void emit_sign(astree* root);
@@ -50,5 +53,6 @@ void emit_call(astree* root);
 void emit_operand(astree* op);
 void emit_int_operand(astree* op);
 void emit_bin_arithmetic(astree* root);
+char register_category(astree* node);
 astree* get_id(astree* vardecl_node);
 #endif

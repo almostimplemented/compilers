@@ -20,7 +20,6 @@ astree* new_astree (int symbol, int filenr, int linenr,
     tree->attributes = 0;
     tree->struct_name = nullptr;
     tree->fields = nullptr;
-    tree->symptr = nullptr;
     tree->lexinfo = intern_stringset (lexinfo);
     DEBUGF ('f', "astree %p->{%d:%d.%d: %s: \"%s\"}\n",
             tree, tree->filenr, tree->linenr, tree->offset,

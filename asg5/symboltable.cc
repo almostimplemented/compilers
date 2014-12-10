@@ -8,6 +8,7 @@ int next_block = 1;
 vector<int> blocknr_stack(1,0);
 astree* current_function = nullptr;
 queue<astree*> string_queue;
+queue<symbol*> function_queue;
 symbol_table* global_table;
 
 symbol* new_symbol(astree* node) {
@@ -18,6 +19,7 @@ symbol* new_symbol(astree* node) {
     sym->offset     = node->offset;
     sym->blocknr    = node->blocknr;
     sym->parameters = nullptr;
+    sym->block      = nullptr;
     sym->struct_name = node->struct_name;
     sym->fields     = node->fields;
     sym->node       = node;
@@ -384,6 +386,8 @@ symbol_entry create_func_entry(astree* func_node) {
     id_node->attributes.set(ATTR_function);
     sym = new_symbol(id_node);
     sym->parameters = new vector<symbol*>();
+    sym->block = block_node;
+    function_queue.push(sym);
     entry = make_pair(id_node->lexinfo, sym);
     enter_block(param_node);
     for (size_t child = 0; 
@@ -862,12 +866,14 @@ void typecheck_new(astree* root) {
         return;
     }
     root->attributes.set(ATTR_struct);
+    root->attributes.set(ATTR_vreg);
     root->struct_name = typeid_node->lexinfo;
     root->fields = got->second->fields;
     return; 
 }
 void typecheck_array(astree* root) { 
     root->attributes.set(ATTR_array);
+    root->attributes.set(ATTR_vreg);
     switch(root->children.at(0)->symbol) {
         case TOK_INT:
             root->attributes.set(ATTR_int);
@@ -940,6 +946,7 @@ void typecheck_var(astree* root) {
         got   = table->find(root->lexinfo);
         if (got != table->end()) {
             root->attributes = attr_bitset(got->second->attributes);
+            root->symptr = got->second;
             if (root->attributes.test(ATTR_struct)) {
                 root->fields = got->second->fields;
                 root->struct_name = got->second->struct_name;
