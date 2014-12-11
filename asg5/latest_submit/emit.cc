@@ -59,11 +59,17 @@ string oil_type(astree* node) {
 
 void emit_code(astree* root) {
     regcnt = 1;
+    emit_prologue();
     emit_structs();
     emit_stringcons();
     emit_vardecls();
     emit_functions();
     emit_statement(root);
+}
+
+void emit_prologue() {
+    fprintf(oilfile, "#define __OCLIB_C__\n");
+    fprintf(oilfile, "#include \"oclib.oh\"\n");
 }
 
 void emit_structs() {
@@ -86,12 +92,11 @@ void emit_structs() {
 }
 
 void emit_stringcons() {
-    while (!string_queue.empty()) {
+    for (int i = 1; !string_queue.empty(); i++) {
         astree* node  = string_queue.front();
         string_queue.pop();
         const string* value = node->lexinfo;
-        fprintf(oilfile, "char* s%lu = %s;\n", regcnt, value->c_str());
-        node->regnr = regcnt; regcnt++;
+        fprintf(oilfile, "char* s%d = %s;\n", i, value->c_str());
     }
 }
 
@@ -125,14 +130,10 @@ void emit_functions() {
             if (i < params->size() - 1)
                 fprintf(oilfile, ",");
         }
-        if (sym->attributes.test(ATTR_function)) {
-            fprintf(oilfile, ")\n");
-            fprintf(oilfile, "{\n");
-            emit_statement(sym->block);
-            fprintf(oilfile, "}\n");
-        } else {
-            fprintf(oilfile, ");\n");
-        }
+        fprintf(oilfile, ")\n");
+        fprintf(oilfile, "{\n");
+        emit_statement(sym->block);
+        fprintf(oilfile, "}\n");
     }
 }
 
@@ -349,9 +350,7 @@ void emit_bin_arithmetic(astree* root) {
 }
 
 void emit_operand(astree* op) {
-    if (op->attributes.test(ATTR_vreg)
-     ||   (op->attributes.test(ATTR_string)
-        && op->attributes.test(ATTR_const))) {
+    if (op->attributes.test(ATTR_vreg)) {
         fprintf(oilfile, "%c%lu", 
                 register_category(op),
                 op->regnr);

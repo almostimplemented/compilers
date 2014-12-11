@@ -352,7 +352,6 @@ symbol_entry create_proto_entry(astree* proto_node) {
     id_node->attributes.set(ATTR_prototype);
     sym = new_symbol(id_node);
     sym->parameters = new vector<symbol*>();
-    function_queue.push(sym);
     if (param_node->children.size() > 0) {
         enter_block(param_node);
         for (size_t child = 0; 

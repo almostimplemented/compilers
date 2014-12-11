@@ -77,8 +77,7 @@ void scan_opts (int argc, char** argv) {
         if (option == EOF) break;
         switch (option) {
             case '@': set_debugflags (optarg);   break;
-            case 'D': cpp_command.append(" -D ");
-                      cpp_command.append(optarg); 
+            case 'D': cpp_command += " -D " + *optarg; 
                       break;
             case 'l': yy_flex_debug = 1;         break;
             case 'y': yydebug = 1;               break;

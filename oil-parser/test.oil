@@ -1,0 +1,21 @@
+void* xcalloc (int nelem, int size);
+void __putb (char __b);
+void __putc (char __c);
+void __puti (int __i);
+void __puts (char* __s);
+void __endl (void);
+int __getc (void);
+char* __getw (void);
+char* __getln (void);
+char** __getargv (void);
+void __exit (int status);
+struct foo {
+        int a;
+        int b;
+};
+char* hello = "Hello, World!";
+void __ocmain (void) {
+        struct foo *p = xcalloc (1, sizeof (struct foo*));
+        __puts (hello);
+        __endl();
+}
